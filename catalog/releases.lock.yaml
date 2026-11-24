@@ -11,7 +11,7 @@ releases:
 
   maya_hairpin:
     adapter_version: 3.2.0
-    commit: 14440faec42d76267099c0d86a141c295237bb7f
+    commit: f7d668484cc6bb813ae0403c480836250567c2ed
     asset: HairPinMaya_Maya2024_v3.2.0.zip
     sha256: 4fd52c28c2c3a2613c9f56d60820422e09ea63a6b931fa2b0ff2eb94f5f640bc
 
