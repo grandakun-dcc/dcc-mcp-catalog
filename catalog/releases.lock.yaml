@@ -1,8 +1,29 @@
 schema_version: 1
 
 releases:
-  dcc_maya: 0.6.1
-  maya_xiaota: adapter-5.1
-  dcc_zbrush: 0.1.0-dev
-  dcc_substance_painter: 1.0.0
-  dcc_marmoset: 0.1.0
+  dcc_maya:
+    version: 0.6.1
+    commit: 7c62dac9f2e54afc9d347c0a53397564da73a9a7
+
+  maya_xiaota:
+    adapter_version: 5.1.0
+    commit: 42865d5bb532b2862d4d05157be7aa30ec603998
+
+  maya_hairpin:
+    adapter_version: 3.2.0
+    commit: 14440faec42d76267099c0d86a141c295237bb7f
+    asset: HairPinMaya_Maya2024_v3.2.0.zip
+    sha256: 4b76d4ef80b8cc978ad2343ea71c15c3b512e0ddee5525295fd03699ab3db057
+
+  maya_openai_gen_maya:
+    adapter_version: 0.1.0
+    commit: 98edd06912d8debfed757e1961133136cc5401dc
+
+  dcc_zbrush:
+    version: 0.1.0-dev
+
+  dcc_substance_painter:
+    version: 1.0.0
+
+  dcc_marmoset:
+    version: 0.1.0

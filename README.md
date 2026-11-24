@@ -13,3 +13,36 @@ python scripts/validate_catalog.py
 
 `catalog/releases.lock.yaml` records only combinations that have been verified.
 Do not point production configuration at an unpinned branch.
+
+## Maya extension workspace
+
+`dcc_maya` is the only MCP server that agents configure. Installed Adapter
+packages register through `grandakun.maya_mcp.extensions` and are enabled on the
+next server start unless their extension ID is listed in
+`DCC_MAYA_DISABLED_EXTENSIONS`.
+
+```powershell
+# Show clone/fetch actions without changing the workspace.
+pwsh -File scripts/bootstrap.ps1 -WorkspaceRoot D:\Dev\Grandakun-DCC -DryRun
+
+# Optionally install maya-mcp plus all three Adapters into an explicit Python.
+pwsh -File scripts/bootstrap.ps1 `
+  -WorkspaceRoot D:\Dev\Grandakun-DCC `
+  -Python C:\path\to\python.exe `
+  -InstallExtensions
+
+# Check repositories, locked versions/SHA256, installed packages and Entry Points.
+pwsh -File scripts/doctor.ps1 `
+  -WorkspaceRoot D:\Dev\Grandakun-DCC `
+  -Python C:\path\to\python.exe
+```
+
+The Catalog derives the verified Maya combination as 71 base tools, 25 xiaota
+tools, 2 HairPin tools plus 2 compatibility aliases, and 6 OpenAIGenMaya tools.
+No handwritten `combined_tools` value is stored.
+
+The private repositories `grandakun/xiaota`, `grandakun/HairPinMaya`, and
+`grandakun/OpenAIGenMaya` are recorded only as migration rollback sources.
+Bootstrap and doctor do not clone, fetch, install, archive, or otherwise modify
+them. Their `main` branches remain fixed until local/P4V validation, rollback
+rehearsal, and explicit owner confirmation are complete.

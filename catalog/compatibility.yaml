@@ -4,11 +4,24 @@ compatibility:
   dcc_maya:
     server_version: 0.6.1
     dcc_versions: ["2024"]
-    notes: GG Maya MCP base used by the xiaota extension.
+    python_versions: ["3.10"]
 
   maya_xiaota:
-    adapter_version: "5.1"
+    adapter_version: 5.1.0
     dcc_versions: ["2024"]
+    python_versions: ["3.10"]
+    base_server: dcc_maya
+
+  maya_hairpin:
+    adapter_version: 3.2.0
+    dcc_versions: ["2024"]
+    python_versions: ["3.10"]
+    base_server: dcc_maya
+
+  maya_openai_gen_maya:
+    adapter_version: 0.1.0
+    dcc_versions: ["2024"]
+    python_versions: ["3.10"]
     base_server: dcc_maya
 
   dcc_zbrush:
