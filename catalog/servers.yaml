@@ -1,0 +1,53 @@
+schema_version: 1
+
+servers:
+  - id: dcc_maya
+    display_name: Maya MCP
+    repository: grandakun-dcc/maya-mcp
+    visibility: public
+    kind: fork
+    upstream: GimbalGoats/GG_MayaMCP
+    version: 0.6.1
+    transport: stdio
+    tools: 71
+
+  - id: dcc_zbrush
+    display_name: ZBrush MCP
+    repository: grandakun-dcc/zbrush-mcp
+    visibility: private
+    kind: owned
+    version: 0.1.0-dev
+    transport: stdio
+    tools: 29
+    bridge:
+      repository: dcc-mcp/dcc-mcp-zbrush
+      relationship: vendored-snapshot
+
+  - id: dcc_substance_painter
+    display_name: Substance Painter MCP
+    repository: grandakun-dcc/substance-painter-mcp
+    visibility: public
+    kind: fork
+    upstream: elliezu/SubstancePainterMCP
+    version: 1.0.0
+    transport: stdio
+    tools: 79
+
+  - id: dcc_marmoset
+    display_name: Marmoset Toolbag MCP
+    repository: grandakun-dcc/marmoset-mcp
+    visibility: public
+    kind: fork
+    upstream: LandgrafRalle/toolbag-mcp
+    version: 0.1.0
+    transport: stdio
+
+extensions:
+  - id: maya_xiaota
+    display_name: xiaota Maya Tools MCP Extension
+    repository: grandakun-dcc/maya-tools-xiaota
+    visibility: private
+    extends: dcc_maya
+    adapter_version: "5.1"
+    tools: 27
+    combined_tools: 98

@@ -1,0 +1,25 @@
+schema_version: 1
+
+compatibility:
+  dcc_maya:
+    server_version: 0.6.1
+    dcc_versions: ["2024"]
+    notes: GG Maya MCP base used by the xiaota extension.
+
+  maya_xiaota:
+    adapter_version: "5.1"
+    dcc_versions: ["2024"]
+    base_server: dcc_maya
+
+  dcc_zbrush:
+    server_version: 0.1.0-dev
+    dcc_versions: ["2027"]
+    bridge_version: 0.2.34
+
+  dcc_substance_painter:
+    server_version: 1.0.0
+    dcc_versions: ["12.1.1"]
+
+  dcc_marmoset:
+    server_version: 0.1.0
+    dcc_versions: ["5.0.2"]

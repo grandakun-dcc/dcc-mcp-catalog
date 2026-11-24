@@ -1,0 +1,8 @@
+schema_version: 1
+
+releases:
+  dcc_maya: 0.6.1
+  maya_xiaota: adapter-5.1
+  dcc_zbrush: 0.1.0-dev
+  dcc_substance_painter: 1.0.0
+  dcc_marmoset: 0.1.0
