@@ -27,12 +27,12 @@ pwsh -File scripts/bootstrap.ps1 -DryRun
 
 # Optionally install maya-mcp plus all three Adapters into an explicit Python.
 pwsh -File scripts/bootstrap.ps1 `
-  -Python C:\path\to\python.exe `
+  -Python <maya-mcp-python.exe> `
   -InstallExtensions
 
 # Check repositories, locked versions/SHA256, installed packages and Entry Points.
 pwsh -File scripts/doctor.ps1 `
-  -Python C:\path\to\python.exe
+  -Python <maya-mcp-python.exe>
 ```
 
 Both scripts derive the workspace root from the parent directory of
