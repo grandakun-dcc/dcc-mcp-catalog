@@ -107,10 +107,10 @@ extensions:
   - id: maya_openai_gen_maya
     extension_id: openai_gen_maya
     display_name: OpenAIGenMaya MCP Extension
-    repository: grandakun-dcc/maya-tools-openai-gen-maya
+    repository: grandakun-dcc/maya-tools-openaigenmaya
     visibility: private
     extends: dcc_maya
-    adapter_package: maya-tools-openai-gen-maya-mcp
+    adapter_package: maya-tools-openaigenmaya-mcp
     adapter_version: 0.1.0
     auto_enable_when_installed: true
     entry_point:

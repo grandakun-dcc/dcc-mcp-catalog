@@ -24,7 +24,8 @@ def test_bootstrap_dry_run_lists_all_new_maya_repositories(tmp_path):
     assert result.returncode == 0, result.stderr
     assert "grandakun-dcc/maya-tools-xiaota" in result.stdout
     assert "grandakun-dcc/maya-tools-hairpin" in result.stdout
-    assert "grandakun-dcc/maya-tools-openai-gen-maya" in result.stdout
+    assert "grandakun-dcc/maya-tools-openaigenmaya" in result.stdout
+    assert "grandakun-dcc/maya-tools-openai-gen-maya" not in result.stdout
     assert "grandakun/xiaota" not in result.stdout
     assert "grandakun/HairPinMaya" not in result.stdout
     assert "grandakun/OpenAIGenMaya" not in result.stdout

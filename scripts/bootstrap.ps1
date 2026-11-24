@@ -71,7 +71,7 @@ if ($InstallExtensions) {
         (Join-Path $WorkspaceRoot "maya-mcp"),
         (Join-Path $WorkspaceRoot "maya-tools-xiaota\integrations\mcp"),
         (Join-Path $WorkspaceRoot "maya-tools-hairpin\integrations\mcp"),
-        (Join-Path $WorkspaceRoot "maya-tools-openai-gen-maya\integrations\mcp")
+        (Join-Path $WorkspaceRoot "maya-tools-openaigenmaya\integrations\mcp")
     )
     foreach ($package in $packages) {
         Write-Output "INSTALL`t$package"
