@@ -13,6 +13,19 @@ $repositories = @(
 )
 $failed = $false
 
+function Test-GitRepository {
+    param([string]$Path)
+
+    try {
+        $inside = (& git -C $Path rev-parse --is-inside-work-tree 2>$null)
+        $exitCode = $LASTEXITCODE
+        return $exitCode -eq 0 -and (($inside -join "").Trim() -eq "true")
+    }
+    catch {
+        return $false
+    }
+}
+
 foreach ($name in $repositories) {
     $path = Join-Path $WorkspaceRoot $name
     if (-not (Test-Path -LiteralPath $path -PathType Container)) {
@@ -20,7 +33,7 @@ foreach ($name in $repositories) {
         $failed = $true
         continue
     }
-    if (-not (Test-Path -LiteralPath (Join-Path $path ".git"))) {
+    if (-not (Test-GitRepository -Path $path)) {
         Write-Output "NOT_GIT`t$name`t$path"
         $failed = $true
         continue

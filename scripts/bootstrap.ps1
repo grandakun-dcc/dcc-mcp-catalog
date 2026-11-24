@@ -14,6 +14,19 @@ $repositories = @(
     "dcc-mcp-catalog"
 )
 
+function Test-GitRepository {
+    param([string]$Path)
+
+    try {
+        $inside = (& git -C $Path rev-parse --is-inside-work-tree 2>$null)
+        $exitCode = $LASTEXITCODE
+        return $exitCode -eq 0 -and (($inside -join "").Trim() -eq "true")
+    }
+    catch {
+        return $false
+    }
+}
+
 if (Test-Path -LiteralPath $WorkspaceRoot -PathType Leaf) {
     throw "Workspace root is not a directory: $WorkspaceRoot"
 }
@@ -23,7 +36,7 @@ foreach ($name in $repositories) {
     $repository = "grandakun-dcc/$name"
 
     if (Test-Path -LiteralPath $path) {
-        if (-not (Test-Path -LiteralPath (Join-Path $path ".git"))) {
+        if (-not (Test-GitRepository -Path $path)) {
             throw "Repository directory exists but is not a git repository: $path"
         }
         Write-Output "EXISTS`t$repository`t$path"

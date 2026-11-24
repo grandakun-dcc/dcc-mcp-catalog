@@ -38,6 +38,16 @@ def test_bootstrap_rejects_existing_non_git_repository_directory(tmp_path):
     assert "exists but is not a git repository" in (result.stdout + result.stderr)
 
 
+def test_bootstrap_rejects_invalid_git_metadata(tmp_path):
+    target = tmp_path / "workspace"
+    (target / "maya-mcp" / ".git").mkdir(parents=True)
+
+    result = run_ps1(BOOTSTRAP, "-WorkspaceRoot", str(target), "-DryRun")
+
+    assert result.returncode != 0
+    assert "exists but is not a git repository" in (result.stdout + result.stderr)
+
+
 def test_bootstrap_dry_run_lists_managed_repositories(tmp_path):
     target = tmp_path / "workspace"
 
@@ -57,3 +67,13 @@ def test_doctor_fails_for_missing_repository(tmp_path):
 
     assert result.returncode != 0
     assert "MISSING" in result.stdout
+
+
+def test_doctor_reports_invalid_git_metadata(tmp_path):
+    target = tmp_path / "workspace"
+    (target / "maya-mcp" / ".git").mkdir(parents=True)
+
+    result = run_ps1(DOCTOR, "-WorkspaceRoot", str(target))
+
+    assert result.returncode != 0
+    assert "NOT_GIT\tmaya-mcp" in result.stdout
