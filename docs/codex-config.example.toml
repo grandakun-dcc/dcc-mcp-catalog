@@ -1,0 +1,28 @@
+# Safe template only. Replace every <PLACEHOLDER>, verify each server locally,
+# then enable one entry at a time. Do not paste this file unchanged.
+
+[mcp_servers.dcc_maya]
+command = "<MAYA_MCP_PYTHON>"
+args = ["<MAYA_TOOLS_XIAOTA>/tools/mcp_server.py"]
+enabled = false
+startup_timeout_sec = 60
+tool_timeout_sec = 1800
+
+[mcp_servers.dcc_zbrush]
+command = "<ZBRUSH_MCP_EXECUTABLE>"
+args = ["serve"]
+enabled = false
+startup_timeout_sec = 60
+tool_timeout_sec = 1800
+
+[mcp_servers.dcc_substance_painter]
+command = "<SUBSTANCE_PAINTER_MCP_EXECUTABLE>"
+enabled = false
+startup_timeout_sec = 60
+tool_timeout_sec = 1800
+
+[mcp_servers.dcc_marmoset]
+command = "<MARMOSET_MCP_EXECUTABLE>"
+enabled = false
+startup_timeout_sec = 60
+tool_timeout_sec = 1800

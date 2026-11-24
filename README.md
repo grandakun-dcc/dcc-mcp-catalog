@@ -42,3 +42,8 @@ dcc_blender          # reserved for the later Blender migration
 
 Keep `maya-tools-xiaota` behind the single `dcc_maya` server; do not register a
 second Maya connector for the xiaota extension.
+
+Use [`docs/codex-config.example.toml`](docs/codex-config.example.toml) as the
+client configuration template. Every entry is disabled and uses an explicit
+placeholder: replace and verify paths locally, then enable one server at a
+time. Do not copy credentials into the Catalog or commit a user config file.
