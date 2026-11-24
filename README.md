@@ -23,19 +23,22 @@ next server start unless their extension ID is listed in
 
 ```powershell
 # Show clone/fetch actions without changing the workspace.
-pwsh -File scripts/bootstrap.ps1 -WorkspaceRoot D:\Dev\Grandakun-DCC -DryRun
+pwsh -File scripts/bootstrap.ps1 -DryRun
 
 # Optionally install maya-mcp plus all three Adapters into an explicit Python.
 pwsh -File scripts/bootstrap.ps1 `
-  -WorkspaceRoot D:\Dev\Grandakun-DCC `
   -Python C:\path\to\python.exe `
   -InstallExtensions
 
 # Check repositories, locked versions/SHA256, installed packages and Entry Points.
 pwsh -File scripts/doctor.ps1 `
-  -WorkspaceRoot D:\Dev\Grandakun-DCC `
   -Python C:\path\to\python.exe
 ```
+
+Both scripts derive the workspace root from the parent directory of
+`dcc-mcp-catalog`, so the complete workspace can be renamed or moved without
+editing configuration. Pass `-WorkspaceRoot` only when managing a different
+workspace.
 
 The Catalog derives the verified Maya combination as 71 base tools, 25 xiaota
 tools, 2 HairPin tools plus 2 compatibility aliases, and 6 OpenAIGenMaya tools.

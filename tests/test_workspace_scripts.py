@@ -30,6 +30,15 @@ def test_bootstrap_dry_run_lists_all_new_maya_repositories(tmp_path):
     assert "grandakun/OpenAIGenMaya" not in result.stdout
 
 
+def test_bootstrap_defaults_to_catalog_parent_directory():
+    result = run_ps1(BOOTSTRAP, "-DryRun")
+
+    assert result.returncode == 0, result.stderr
+    assert str(ROOT.parent / "maya-mcp") in result.stdout
+    assert "D:\\Dev\\Grandakun-DCC" not in BOOTSTRAP.read_text(encoding="utf-8")
+    assert "D:\\Dev\\Grandakun-DCC" not in DOCTOR.read_text(encoding="utf-8")
+
+
 def test_doctor_fails_for_missing_repository(tmp_path):
     result = run_ps1(
         DOCTOR,

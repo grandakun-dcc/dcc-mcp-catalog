@@ -1,5 +1,5 @@
 param(
-    [string]$WorkspaceRoot = "D:\Dev\Grandakun-DCC",
+    [string]$WorkspaceRoot,
     [string]$Python = "python",
     [switch]$InstallExtensions,
     [switch]$DryRun
@@ -7,6 +7,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 $catalogRoot = Split-Path -Parent $PSScriptRoot
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    $WorkspaceRoot = Split-Path -Parent $catalogRoot
+}
 $validator = Join-Path $PSScriptRoot "validate_catalog.py"
 $servers = Join-Path $catalogRoot "catalog\servers.yaml"
 $compatibility = Join-Path $catalogRoot "catalog\compatibility.yaml"
