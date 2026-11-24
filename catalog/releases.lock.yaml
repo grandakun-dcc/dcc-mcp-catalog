@@ -17,7 +17,7 @@ releases:
 
   maya_openai_gen_maya:
     adapter_version: 0.1.0
-    commit: 98edd06912d8debfed757e1961133136cc5401dc
+    commit: 5fc3ae4c46950a3f4f6850bb64e73bc2ed21cc1e
 
   dcc_zbrush:
     version: 0.1.0-dev
