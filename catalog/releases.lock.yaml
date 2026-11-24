@@ -7,13 +7,13 @@ releases:
 
   maya_xiaota:
     adapter_version: 5.1.0
-    commit: 42865d5bb532b2862d4d05157be7aa30ec603998
+    commit: 7a873ab068a961cc65c4ef0fe9bbcd3432b32d30
 
   maya_hairpin:
     adapter_version: 3.2.0
     commit: 14440faec42d76267099c0d86a141c295237bb7f
     asset: HairPinMaya_Maya2024_v3.2.0.zip
-    sha256: 4b76d4ef80b8cc978ad2343ea71c15c3b512e0ddee5525295fd03699ab3db057
+    sha256: 4fd52c28c2c3a2613c9f56d60820422e09ea63a6b931fa2b0ff2eb94f5f640bc
 
   maya_openai_gen_maya:
     adapter_version: 0.1.0
