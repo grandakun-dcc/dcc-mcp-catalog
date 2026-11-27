@@ -1,9 +1,12 @@
+import subprocess
 from copy import deepcopy
 from types import SimpleNamespace
 
 import pytest
 from validate_catalog import (
     CatalogError,
+    _repository_rows,
+    _run_git_check,
     combined_tool_count,
     inspect_installed_extensions,
     validate_catalog,
@@ -90,7 +93,7 @@ def valid_releases():
         "schema_version": 1,
         "releases": {
             "dcc_maya": {"version": "0.6.1", "commit": "7c62dac"},
-            "dcc_zbrush": {"version": "0.1.0-dev"},
+            "dcc_zbrush": {"version": "0.1.0-dev", "commit": "33159c4"},
             "maya_xiaota": {"adapter_version": "5.1.0", "commit": "42865d5"},
         },
     }
@@ -175,6 +178,55 @@ def test_release_and_compatibility_versions_must_match(
     compatibility["compatibility"]["maya_xiaota"]["base_server"] = "missing"
     with pytest.raises(CatalogError, match="compatibility base_server must equal dcc_maya"):
         validate_catalog(valid_catalog, compatibility, valid_releases)
+
+
+def test_every_installable_repository_requires_a_locked_commit(
+    valid_catalog, valid_compatibility, valid_releases
+):
+    releases = deepcopy(valid_releases)
+    del releases["releases"]["dcc_zbrush"]["commit"]
+
+    with pytest.raises(CatalogError, match="dcc_zbrush: missing release commit"):
+        validate_catalog(valid_catalog, valid_compatibility, releases)
+
+
+def test_repository_rows_include_locked_commits(valid_catalog, valid_releases):
+    assert _repository_rows(valid_catalog, valid_releases) == [
+        ("grandakun-dcc/maya-mcp", "maya-mcp", "7c62dac"),
+        ("grandakun-dcc/zbrush-mcp", "zbrush-mcp", "33159c4"),
+        ("grandakun-dcc/maya-tools-xiaota", "maya-tools-xiaota", "42865d5"),
+    ]
+
+
+def test_git_check_rejects_revision_mismatch(tmp_path):
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    subprocess.run(["git", "init", str(repository)], check=True, capture_output=True)
+    (repository / "file.txt").write_text("locked", encoding="utf-8")
+    subprocess.run(["git", "-C", str(repository), "add", "file.txt"], check=True)
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repository),
+            "-c",
+            "user.name=Catalog Tests",
+            "-c",
+            "user.email=catalog-tests@example.invalid",
+            "commit",
+            "-m",
+            "test",
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+    errors = _run_git_check(
+        tmp_path,
+        [("grandakun-dcc/repo", "repo", "0" * 40)],
+    )
+
+    assert errors == ["grandakun-dcc/repo: revision does not match locked commit"]
 
 
 def test_legacy_rollback_repository_cannot_be_archived(valid_catalog):

@@ -220,6 +220,11 @@ def validate_catalog(
                 raise CatalogError(
                     f"{server_id}: release version must equal {server['version']}"
                 )
+            commit = item.get("commit")
+            if commit is None:
+                raise CatalogError(f"{server_id}: missing release commit")
+            if not isinstance(commit, str) or not _COMMIT_PATTERN.fullmatch(commit):
+                raise CatalogError(f"{server_id}: invalid release commit")
         for extension_id, extension in extension_by_id.items():
             item = releases.get(extension_id)
             if not isinstance(item, dict):
@@ -230,9 +235,9 @@ def validate_catalog(
                     f"{extension['adapter_version']}"
                 )
             commit = item.get("commit")
-            if commit is not None and (
-                not isinstance(commit, str) or not _COMMIT_PATTERN.fullmatch(commit)
-            ):
+            if commit is None:
+                raise CatalogError(f"{extension_id}: missing release commit")
+            if not isinstance(commit, str) or not _COMMIT_PATTERN.fullmatch(commit):
                 raise CatalogError(f"{extension_id}: invalid release commit")
             if extension_id == "maya_hairpin":
                 if not isinstance(item.get("asset"), str) or not item["asset"]:
@@ -354,16 +359,25 @@ def validate_workspace(
     return errors
 
 
-def _repository_rows(data: dict[str, Any]) -> list[tuple[str, str]]:
+def _repository_rows(
+    data: dict[str, Any], releases_data: dict[str, Any]
+) -> list[tuple[str, str, str]]:
+    releases = releases_data["releases"]
     return [
-        (item["repository"], item["repository"].split("/", 1)[1])
+        (
+            item["repository"],
+            item["repository"].split("/", 1)[1],
+            releases[item["id"]]["commit"],
+        )
         for item in [*data.get("servers", []), *data.get("extensions", [])]
     ]
 
 
-def _run_git_check(workspace_root: Path, repository_rows: list[tuple[str, str]]) -> list[str]:
+def _run_git_check(
+    workspace_root: Path, repository_rows: list[tuple[str, str, str]]
+) -> list[str]:
     errors: list[str] = []
-    for repository, directory in repository_rows:
+    for repository, directory, locked_commit in repository_rows:
         path = workspace_root / directory
         if not path.is_dir():
             errors.append(f"{repository}: repository directory is missing")
@@ -376,6 +390,15 @@ def _run_git_check(workspace_root: Path, repository_rows: list[tuple[str, str]])
         )
         if result.returncode != 0 or result.stdout.strip() != "true":
             errors.append(f"{repository}: directory is not a git repository")
+            continue
+        result = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0 or not result.stdout.strip().startswith(locked_commit):
+            errors.append(f"{repository}: revision does not match locked commit")
     return errors
 
 
@@ -395,13 +418,15 @@ def main(argv: list[str] | None = None) -> int:
     validate_catalog(data, compatibility, releases)
 
     if args.list_repositories:
-        for repository, directory in _repository_rows(data):
-            print(f"{repository}\t{directory}")
+        for repository, directory, commit in _repository_rows(data, releases):
+            print(f"{repository}\t{directory}\t{commit}")
         return 0
 
     errors: list[str] = []
     if args.workspace_root is not None:
-        errors.extend(_run_git_check(args.workspace_root, _repository_rows(data)))
+        errors.extend(
+            _run_git_check(args.workspace_root, _repository_rows(data, releases))
+        )
         errors.extend(validate_workspace(data, releases, args.workspace_root))
     if args.check_installed:
         errors.extend(inspect_installed_extensions(data))

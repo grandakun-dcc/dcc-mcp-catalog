@@ -14,6 +14,7 @@ $servers = Join-Path $catalogRoot "catalog\servers.yaml"
 $compatibility = Join-Path $catalogRoot "catalog\compatibility.yaml"
 $releases = Join-Path $catalogRoot "catalog\releases.lock.yaml"
 $failed = $false
+$canValidate = $true
 
 function Test-GitRepository {
     param([string]$Path)
@@ -34,29 +35,36 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 foreach ($row in $rows) {
-    $parts = $row -split "`t", 2
+    $parts = $row -split "`t", 3
     $repository = $parts[0]
     $name = $parts[1]
+    $lockedCommit = $parts[2]
     $path = Join-Path $WorkspaceRoot $name
     if (-not (Test-Path -LiteralPath $path -PathType Container)) {
         Write-Output "MISSING`t$repository`t$path"
         $failed = $true
+        $canValidate = $false
         continue
     }
     if (-not (Test-GitRepository -Path $path)) {
         Write-Output "NOT_GIT`t$repository`t$path"
         $failed = $true
+        $canValidate = $false
         continue
     }
 
     $branch = (& git -C $path branch --show-current).Trim()
     $dirty = [bool](& git -C $path status --porcelain)
     $remote = (& git -C $path remote get-url origin).Trim()
+    $currentCommit = (& git -C $path rev-parse HEAD).Trim()
     $state = if ($dirty) { "DIRTY" } else { "CLEAN" }
-    Write-Output "$state`t$repository`t$branch`t$remote"
+    Write-Output "$state`t$repository`t$branch`t$currentCommit`t$lockedCommit`t$remote"
+    if ($dirty) {
+        $failed = $true
+    }
 }
 
-if (-not $failed) {
+if ($canValidate) {
     $arguments = @(
         $validator,
         $servers,

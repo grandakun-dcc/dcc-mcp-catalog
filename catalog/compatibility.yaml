@@ -31,8 +31,8 @@ compatibility:
 
   dcc_substance_painter:
     server_version: 1.0.0
-    dcc_versions: ["12.1.1"]
+    dcc_versions: ["12.1.5"]
 
   dcc_marmoset:
     server_version: 0.1.0
-    dcc_versions: ["5.0.2"]
+    dcc_versions: ["5.0.7"]

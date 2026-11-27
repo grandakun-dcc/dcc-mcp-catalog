@@ -29,6 +29,7 @@ def test_bootstrap_dry_run_lists_all_new_maya_repositories(tmp_path):
     assert "grandakun/xiaota" not in result.stdout
     assert "grandakun/HairPinMaya" not in result.stdout
     assert "grandakun/OpenAIGenMaya" not in result.stdout
+    assert "CHECKOUT" in result.stdout
 
 
 def test_bootstrap_defaults_to_catalog_parent_directory():

@@ -37,14 +37,18 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 foreach ($row in $rows) {
-    $parts = $row -split "`t", 2
+    $parts = $row -split "`t", 3
     $repository = $parts[0]
     $name = $parts[1]
+    $commit = $parts[2]
     $path = Join-Path $WorkspaceRoot $name
 
     if (Test-Path -LiteralPath $path) {
         if (-not (Test-GitRepository -Path $path)) {
             throw "Repository directory exists but is not a git repository: $path"
+        }
+        if (& git -C $path status --porcelain) {
+            throw "Repository has local changes: $path"
         }
         Write-Output "EXISTS`t$repository`t$path"
         if (-not $DryRun) {
@@ -53,15 +57,27 @@ foreach ($row in $rows) {
                 throw "Failed to fetch $repository"
             }
         }
-        continue
+    }
+    else {
+        Write-Output "CLONE`t$repository`t$path"
+        if (-not $DryRun) {
+            New-Item -ItemType Directory -Force -Path $WorkspaceRoot | Out-Null
+            & gh repo clone $repository $path
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to clone $repository"
+            }
+        }
     }
 
-    Write-Output "CLONE`t$repository`t$path"
+    Write-Output "CHECKOUT`t$repository`t$commit"
     if (-not $DryRun) {
-        New-Item -ItemType Directory -Force -Path $WorkspaceRoot | Out-Null
-        & gh repo clone $repository $path
+        & git -C $path cat-file -e "$commit`^{commit}"
         if ($LASTEXITCODE -ne 0) {
-            throw "Failed to clone $repository"
+            throw "Locked commit is unavailable for $repository`: $commit"
+        }
+        & git -C $path checkout --detach $commit
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to checkout locked commit for $repository`: $commit"
         }
     }
 }
