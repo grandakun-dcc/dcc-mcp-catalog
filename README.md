@@ -3,6 +3,26 @@
 Public source of truth for the DCC MCP repositories maintained under
 `grandakun-dcc`.
 
+## Codex skills
+
+Reusable public agent guidance is maintained separately in
+`grandakun-dcc/dcc-codex-skills`. Keeping the skill collection separate
+allows MCP server releases and agent instructions to version independently.
+
+Install pinned skills from the collection tag rather than copying them from
+this catalog:
+
+```powershell
+python "$env:USERPROFILE\.codex\skills\.system\skill-installer\scripts\install-skill-from-github.py" `
+  --repo grandakun-dcc/dcc-codex-skills `
+  --ref v1.0.0 `
+  --path skills/dcc-mcp-connections
+```
+
+Atom project workflows, internal documentation references, and Perforce
+guidance are intentionally excluded from this public catalog and public skill
+collection.
+
 ## Validate
 
 ```powershell
