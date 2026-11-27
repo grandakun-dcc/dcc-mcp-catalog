@@ -44,10 +44,106 @@ servers:
 
 extensions:
   - id: maya_xiaota
+    extension_id: xiaota
     display_name: xiaota Maya Tools MCP Extension
     repository: grandakun-dcc/maya-tools-xiaota
     visibility: private
     extends: dcc_maya
-    adapter_version: "5.1"
-    tools: 27
-    combined_tools: 98
+    adapter_package: maya-tools-xiaota-mcp
+    adapter_version: 5.1.0
+    auto_enable_when_installed: true
+    entry_point:
+      group: grandakun.maya_mcp.extensions
+      name: xiaota
+      value: xiaota_mcp.extension:get_extension
+    tool_names:
+      - xiaota_request_status
+      - xiaota_capabilities
+      - xiaota_toolbox_open
+      - xiaota_tool_open
+      - xiaota_weights_analyze
+      - xiaota_high_low_preview
+      - xiaota_lod_shells_analyze
+      - xiaota_weights_optimize
+      - xiaota_weights_select_invalid
+      - xiaota_skin_transfer
+      - xiaota_vertices_snap
+      - xiaota_bs_names
+      - xiaota_vertex_mask
+      - xiaota_vertex_channels_merge
+      - xiaota_materials_manage
+      - xiaota_material_import
+      - xiaota_fbx_batch_export
+      - xiaota_maya_flow_export
+      - xiaota_animation_transfer
+      - xiaota_skin_merge
+      - xiaota_bind_reset
+      - xiaota_rename
+      - xiaota_bs_rename
+      - xiaota_normals
+      - xiaota_lod
+    compatibility_aliases: []
+
+  - id: maya_hairpin
+    extension_id: hairpin
+    display_name: HairPinMaya MCP Extension
+    repository: grandakun-dcc/maya-tools-hairpin
+    visibility: private
+    extends: dcc_maya
+    adapter_package: maya-tools-hairpin-mcp
+    adapter_version: 3.2.0
+    auto_enable_when_installed: true
+    entry_point:
+      group: grandakun.maya_mcp.extensions
+      name: hairpin
+      value: hairpin_mcp.extension:get_extension
+    tool_names:
+      - hairpin_inspect
+      - hairpin_execute
+    compatibility_aliases:
+      - xiaota_hairpin_inspect
+      - xiaota_hairpin_execute
+
+  - id: maya_openai_gen_maya
+    extension_id: openai_gen_maya
+    display_name: OpenAIGenMaya MCP Extension
+    repository: grandakun-dcc/maya-tools-openaigenmaya
+    visibility: private
+    extends: dcc_maya
+    adapter_package: maya-tools-openaigenmaya-mcp
+    adapter_version: 0.1.0
+    auto_enable_when_installed: true
+    entry_point:
+      group: grandakun.maya_mcp.extensions
+      name: openai_gen_maya
+      value: openai_gen_mcp.extension:get_extension
+    tool_names:
+      - openai_gen_capabilities
+      - openai_gen_submit
+      - openai_gen_task_status
+      - openai_gen_history
+      - openai_gen_import_result
+      - openai_gen_postprocess
+    compatibility_aliases: []
+
+legacy_repositories:
+  - id: legacy_xiaota
+    repository: grandakun/xiaota
+    visibility: private
+    role: migration_rollback
+    baseline_commit: 663804d2d89377e8499dd6ace71420b3e196c3ba
+    archive_allowed: false
+
+  - id: legacy_hairpin
+    repository: grandakun/HairPinMaya
+    visibility: private
+    role: migration_rollback
+    baseline_commit: d7ab2cf297d863adc9b8d01cdab91e0911924929
+    archive_allowed: false
+
+  - id: legacy_openai_gen_maya
+    repository: grandakun/OpenAIGenMaya
+    visibility: private
+    role: migration_rollback
+    baseline_commit: 8a547c916ef17732c63ab2418041f3355a4929f4
+    archive_allowed: false
