@@ -14,7 +14,7 @@ servers:
   - id: dcc_zbrush
     display_name: ZBrush MCP
     repository: grandakun-dcc/zbrush-mcp
-    visibility: private
+    visibility: public
     kind: owned
     version: 0.1.0-dev
     transport: stdio

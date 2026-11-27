@@ -21,7 +21,7 @@ releases:
 
   dcc_zbrush:
     version: 0.1.0-dev
-    commit: d4142b5a0607bbb1cada3b00310111653714bc86
+    commit: 9fbe5c60802885e63b115974aae45f76e175a64e
 
   dcc_substance_painter:
     version: 1.0.0

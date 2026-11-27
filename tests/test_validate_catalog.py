@@ -30,7 +30,7 @@ def valid_catalog():
             {
                 "id": "dcc_zbrush",
                 "repository": "grandakun-dcc/zbrush-mcp",
-                "visibility": "private",
+                "visibility": "public",
                 "kind": "owned",
                 "version": "0.1.0-dev",
                 "tools": 29,
