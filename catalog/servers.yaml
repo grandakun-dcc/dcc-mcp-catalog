@@ -16,7 +16,7 @@ servers:
     repository: grandakun-dcc/zbrush-mcp
     visibility: public
     kind: owned
-    version: 0.1.0-dev
+    version: 0.1.0
     transport: stdio
     tools: 29
     bridge:

@@ -25,7 +25,7 @@ compatibility:
     base_server: dcc_maya
 
   dcc_zbrush:
-    server_version: 0.1.0-dev
+    server_version: 0.1.0
     dcc_versions: ["2027"]
     bridge_version: 0.2.34
 
