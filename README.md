@@ -1,6 +1,6 @@
 # Grandakun DCC MCP Catalog
 
-Private source of truth for the DCC MCP repositories maintained under
+Public source of truth for the DCC MCP repositories maintained under
 `grandakun-dcc`.
 
 ## Validate
